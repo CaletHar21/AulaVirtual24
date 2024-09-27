@@ -1,20 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>HOLA MUNDO </Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#4CDBE4',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+import React from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
+import Login from './frontend/src/alumno/Login';
+const App = () => {
+return <Login/>
+};
+export default App;
