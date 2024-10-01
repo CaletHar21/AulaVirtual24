@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useNavigation } from '@react-navigation/native';
 
 // Datos de ejemplo para los cursos
 const courses = [
@@ -11,13 +10,35 @@ const courses = [
   // Agrega más cursos aquí
 ];
 
-const Cursos = (navigation) => {
+// Modificamos el componente para recibir la prop de `navigation`
+const Cursos = ({ navigation }) => {
+
   // Función para renderizar cada elemento de la lista
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.courseItem}>
+    <TouchableOpacity 
+      style={styles.courseItem} 
+      onPress={() => {
+        console.log(`Navegando a ${item.title}`);
+        switch (item.title) {
+          case 'Curso de JavaScript':
+            navigation.navigate('MaterialEstudioJava');
+            break;
+          case 'Curso de React Native':
+            navigation.navigate('MaterialEstudioReactNative');
+            break;
+          case 'Curso de Diseño UX/UI':
+            navigation.navigate('MaterialEstudioUXUI');
+            break;
+          default:
+            console.log('Curso no encontrado');
+            break;
+        }
+      }}
+    >
       <Text style={styles.courseTitle}>{item.title}</Text>
     </TouchableOpacity>
   );
+
   return (
     <LinearGradient
       colors={['#873b41', '#fdfdfd', '#fdfdfd']}  // Colores del gradiente
@@ -68,7 +89,8 @@ const styles = StyleSheet.create({
   },
   courseTitle: {
     fontSize: 18,
-    color: '#333',  },
+    color: '#333',
+  },
 });
 
 export default Cursos;
