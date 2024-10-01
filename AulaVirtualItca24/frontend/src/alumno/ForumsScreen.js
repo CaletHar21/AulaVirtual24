@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput, Button } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const ForumsScreen = ({ navigation }) => {
     const [forums, setForums] = useState([

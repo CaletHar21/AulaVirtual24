@@ -17,7 +17,7 @@ const Login = () => {
     // Verificar credenciales
     if (user && user.username === username && user.password === password) {
       console.log("Inicio de sesión exitoso");
-      navigation.navigate('Cursos'); // Navegar a la pantalla de Cursos
+      navigation.navigate('HomeScreen'); // Navegar a la pantalla de Cursos
     } else {
       console.log("Usuario o contraseña incorrectos");
       // Aquí podrías mostrar un mensaje de error al usuario
