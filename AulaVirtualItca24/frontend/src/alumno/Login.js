@@ -1,60 +1,57 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+const bcrypt = require('bcryptjs');
 
-const Login = () => {
+const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const navigation = useNavigation(); // Asegúrate de tener acceso a la navegación
+  const navigation = useNavigation();
 
   const handleLogin = async () => {
-    // Obtener el usuario guardado
-    const userString = await AsyncStorage.getItem('user');
-    const user = userString ? JSON.parse(userString) : null;
-
-    // Verificar credenciales
-    if (user && user.username === username && user.password === password) {
-      console.log("Inicio de sesión exitoso");
-      navigation.navigate('HomeScreen'); // Navegar a la pantalla de Cursos
-    } else {
-      console.log("Usuario o contraseña incorrectos");
-      // Aquí podrías mostrar un mensaje de error al usuario
+    try {
+      const response = await axios.post('http://192.168.0.13:5000/api/login', {
+        username,
+        password,
+      });
+      //console.log(response.data);
+      if (response.data.message === 'LOGIN EXITOSO') {
+        navigation.navigate('HomeScreen');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Credenciales inválidas');
     }
   };
+
   return (
     <LinearGradient
-      colors={['#85282f', '#873b41', '#e8ecf9', '#fdfdfd']} // Colores del gradiente
-      style={styles.container}  >
+      colors={['#85282f', '#873b41', '#e8ecf9', '#fdfdfd']}
+      style={styles.container}
+    >
       <View style={styles.innerContainer}>
-        {/* Imagen de login centrada */}
-        <View style={styles.logoContainer}>
-          <Image
-            source={require('../../../assets/LoginLogo.png')}
-            style={[styles.logo, { tintColor: '#f2d7d5' }]}
-            resizeMode="contain"
-          />
-        </View>
         <Text style={styles.title}>Iniciar Sesión</Text>
         <TextInput
           style={styles.input}
           placeholder="Nombre de usuario"
           placeholderTextColor="#aaa"
           value={username}
-          onChangeText={setUsername}  />
+          onChangeText={setUsername}
+        />
         <TextInput
           style={styles.input}
           placeholder="Contraseña"
           placeholderTextColor="#aaa"
           value={password}
           onChangeText={setPassword}
-          secureTextEntry />
+          secureTextEntry
+        />
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Ingresar</Text>
-        </TouchableOpacity>        
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Recuperar')}>
-          <Text style={styles.registerText}>Olvide mi Contraseña</Text>
+          <Text style={styles.registerText}>Olvidé mi Contraseña</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Registro')}>
           <Text style={styles.registerText}>¿No tienes una cuenta? Regístrate aquí</Text>
@@ -75,15 +72,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: 'transparent',
     alignItems: 'center',
-  },
-  logoContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  logo: {
-    width: 100,
-    height: 100,
   },
   title: {
     fontSize: 28,
@@ -129,4 +117,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default LoginScreen;

@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TextInput, Button, FlatList } from 'react-nativ
 
 const ForumDetailScreen = ({ route }) => {
     const { forumId } = route.params;
+    //hjfd
     
     // Aquí puedes simular un foro con respuestas
     const [responses, setResponses] = useState([]);

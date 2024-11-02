@@ -2,37 +2,45 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+
 
 const Registro = ({ navigation }) => {
-  const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleRegister = async () => {
-    const user = { name, username, password };
-    // Guardar el usuario en AsyncStorage
-    await AsyncStorage.setItem('user', JSON.stringify(user));
-    console.log("Usuario registrado:", user);
-    // Navegar a la pantalla de Login
-    navigation.navigate('Login');
+    const user = { username, password };
+
+    try {
+      const response = await fetch('http://192.168.0.13:5000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(user),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message);
+        navigation.navigate('Login'); // Navegar a la pantalla de Login
+      } else {
+        const errorData = await response.json();
+        console.log('Error en el registro:', errorData.message);
+      }
+    } catch (error) {
+      console.log('Error de conexión:', error);
+    }
   };
 
   return (
     <LinearGradient
       colors={['#9ab1fa', '#e8ecf9', '#fdfdfd']}
-      style={styles.container}  >
+      style={styles.container}>
       <View style={styles.innerContainer}>
         <Text style={styles.title}>Registro de Usuario</Text>
-        <View style={styles.inputContainer}>
-          <Icon name="user" size={20} color="#aaa" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Nombre"
-            placeholderTextColor="#aaa"
-            value={name}
-            onChangeText={setName}/>
-        </View>
         <View style={styles.inputContainer}>
           <Icon name="user" size={20} color="#aaa" style={styles.icon} />
           <TextInput
@@ -40,7 +48,7 @@ const Registro = ({ navigation }) => {
             placeholder="Nombre de usuario"
             placeholderTextColor="#aaa"
             value={username}
-            onChangeText={setUsername}  />
+            onChangeText={setUsername} />
         </View>
         <View style={styles.inputContainer}>
           <Icon name="lock" size={20} color="#aaa" style={styles.icon} />
@@ -50,7 +58,7 @@ const Registro = ({ navigation }) => {
             placeholderTextColor="#aaa"
             value={password}
             onChangeText={setPassword}
-            secureTextEntry     />
+            secureTextEntry />
         </View>
         <TouchableOpacity style={styles.button} onPress={handleRegister}>
           <Text style={styles.buttonText}>Registrar</Text>
