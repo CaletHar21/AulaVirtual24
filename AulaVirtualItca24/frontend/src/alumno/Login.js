@@ -18,7 +18,7 @@ const LoginScreen = () => {
       });
       //console.log(response.data);
       if (response.data.message === 'LOGIN EXITOSO') {
-        navigation.navigate('HomeScreen');
+        navigation.navigate('HomeTabs');
       }
     } catch (error) {
       Alert.alert('Error', 'Credenciales inválidas');

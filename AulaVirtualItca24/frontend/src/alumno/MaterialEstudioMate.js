@@ -1,16 +1,18 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Linking, Alert, Button } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Linking, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
  
-// Datos de ejemplo para el material de estudio del curso de JavaScript
+// Datos de ejemplo para el material de estudio de Matemáticas Avanzadas
 const studyMaterial = [
-  { id: '1', title: 'Introducción a JavaScript', url: 'https://www.youtube.com/watch?v=W6NZfCO5SIk' },
-  { id: '2', title: 'Funciones en JavaScript', url: 'https://www.youtube.com/watch?v=krI_T9r2t3k' },
-  { id: '3', title: 'JavaScript Avanzado', url: 'https://www.youtube.com/watch?v=EUMZm80Pr8U' },
+  { id: '1', title: 'Cálculo Diferencial', url: 'https://www.youtube.com/watch?v=3QK04XTxR9Y' },
+  { id: '2', title: 'Álgebra Lineal', url: 'https://www.youtube.com/watch?v=O4JY1p9d9Zg' },
+  { id: '3', title: 'Ecuaciones Diferenciales', url: 'https://www.youtube.com/watch?v=vx2jS_b_1xY' },
+  { id: '4', title: 'Cálculo Integral', url: 'https://www.youtube.com/watch?v=SPAv6j8Qh6A' },
+  { id: '5', title: 'Teoría de Números', url: 'https://www.youtube.com/watch?v=ZgM9TgU0ReI' },
   // Agrega más enlaces aquí
 ];
  
-const MaterialEstudioJava = ({ navigation }) => {
+const MaterialEstudioMate = () => {
   // Función para abrir enlaces de YouTube
   const openLink = (url) => {
     Linking.openURL(url)
@@ -29,22 +31,16 @@ const MaterialEstudioJava = ({ navigation }) => {
  
   return (
     <LinearGradient
-      colors={['#3b5998', '#fdfdfd', '#fdfdfd']}  // Colores del gradiente
+      colors={['#61dafb', '#fdfdfd', '#fdfdfd']}  // Colores del gradiente
       style={styles.container}
     >
       <View style={styles.innerContainer}>
-        <Text style={styles.title}>Material de Estudio - JavaScript</Text>
+        <Text style={styles.title}>Material de Estudio - Matemáticas Avanzadas</Text>
         <FlatList
           data={studyMaterial}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
-        <TouchableOpacity
-          style={styles.quizButton}
-          onPress={() => navigation.navigate('QuizJava')} w
-        >
-          <Text style={styles.quizButtonText}>Quiz</Text>
-        </TouchableOpacity>
       </View>
     </LinearGradient>
   );
@@ -85,18 +81,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#333',  
   },
-  quizButton: {
-    marginTop: 20,
-    padding: 15,
-    backgroundColor: '#ff7f50', // Color del botón
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  quizButtonText: {
-    fontSize: 18,
-    color: '#fff',
-  },
 });
  
-export default MaterialEstudioJava;
- 
+export default MaterialEstudioMate;
