@@ -4,9 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Calendar } from 'react-native-calendars';
  
-// pantallas
+// Pantallas
 import Login from './frontend/src/alumno/Login';
 import Registro from './frontend/src/alumno/Registro';
 import Cursos from './frontend/src/alumno/Cursos';
@@ -18,13 +17,12 @@ import ForumsScreen from './frontend/src/alumno/ForumsScreen';
 import Calendario from './frontend/src/alumno/Calendario';
 import QuizJava from './frontend/src/alumno/QuizJava';
 import MaterialEstudioMate from './frontend/src/alumno/MaterialEstudioMate';
+import Recuperar from './frontend/src/alumno/Recuperar'; 
 
 
- 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
  
-// Estilos generales
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -35,8 +33,14 @@ const styles = StyleSheet.create({
     padding: 4,
   },
 });
- 
-// navegacion de las TABS
+
+const TabIcon = ({ name, focused }) => (
+  <View style={{ ...styles.tabIconContainer, borderWidth: focused ? 2 : 0, borderColor: 'black' }}>
+    <Icon name={name} size={24} color={focused ? 'red' : 'gray'} />
+  </View>
+);
+
+// Navegación de las TABS
 const AppTabs = () => {
   return (
     <Tab.Navigator
@@ -50,70 +54,46 @@ const AppTabs = () => {
         name="Home"
         component={Home}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{
-              ...styles.tabIconContainer,
-              borderWidth: focused ? 2 : 0,
-              borderColor: 'black',
-            }}>
-              <Icon name="home" size={24} color="red" />
-            </View>
-          )
+          tabBarIcon: ({ focused }) => <TabIcon name="home" focused={focused} />,
         }}
       />
       <Tab.Screen
         name="Cursos"
         component={Cursos}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{
-              ...styles.tabIconContainer,
-              borderWidth: focused ? 2 : 0,
-              borderColor: 'black',
-            }}>
-              <Icon name="list" size={24} color="red" />
-            </View>
-          )
+          tabBarIcon: ({ focused }) => <TabIcon name="list" focused={focused} />,
         }}
       />
-       <Tab.Screen
+      <Tab.Screen
         name="Calendario"
         component={Calendario}
         options={{
-          tabBarIcon: ({ focused }) => (
-            <View style={{
-              ...styles.tabIconContainer,
-              borderWidth: focused ? 2 : 0,
-              borderColor: 'black',
-            }}>
-              <Icon name="calendar-today" size={24} color="red" />
-            </View>
-          )
+          tabBarIcon: ({ focused }) => <TabIcon name="calendar-today" focused={focused} />,
         }}
       />
     </Tab.Navigator>
   );
 };
  
-// Componente principal, el hom lo cambio por home TABS eso es para que el TABS quede despues del menu
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Registro" component={Registro} />
-        <Stack.Screen name="HomeTabs" component={AppTabs} options={{ headerShown: false }} />
-        <Stack.Screen name="MaterialEstudioJava" component={MaterialEstudioJava} />
-        <Stack.Screen name="MaterialEstudioReactNative" component={MaterialEstudioReactNative} />
-       <Stack.Screen name="MaterialEstudioUXUI" component={MaterialEstudioUXUI} />
-       <Stack.Screen name="QuizJava" component={QuizJava} />
-       <Stack.Screen name="MaterialEstudioMate" component={MaterialEstudioMate} />             
-        <Stack.Screen name="Foro" component={ForumsScreen} />
-        
-      </Stack.Navigator>
+      <View style={styles.container}>
+        <Stack.Navigator initialRouteName='Login'>
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          <Stack.Screen name="Registro" component={Registro} options={{ headerShown: false }} />
+          <Stack.Screen name="HomeTabs" component={AppTabs} options={{ headerShown: false }} />
+          <Stack.Screen name="MaterialEstudioJava" component={MaterialEstudioJava} />
+          <Stack.Screen name="MaterialEstudioReactNative" component={MaterialEstudioReactNative} />
+          <Stack.Screen name="MaterialEstudioUXUI" component={MaterialEstudioUXUI} />
+          <Stack.Screen name="QuizJava" component={QuizJava} />
+          <Stack.Screen name="MaterialEstudioMate" component={MaterialEstudioMate} />
+          <Stack.Screen name="Foro" component={ForumsScreen} />
+          <Stack.Screen name="Recuperar" component={Recuperar} />
+        </Stack.Navigator>
+      </View>
     </NavigationContainer>
   );
 };
  
 export default App;
- 

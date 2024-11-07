@@ -3,9 +3,6 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
-
-
 const Registro = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -14,7 +11,7 @@ const Registro = ({ navigation }) => {
     const user = { username, password };
 
     try {
-      const response = await fetch('http://192.168.0.13:5000/api/register', {
+      const response = await fetch('http://172.16.164.125:5000/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

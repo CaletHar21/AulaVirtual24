@@ -1,9 +1,9 @@
-const User = require('../models/User');
+const User = require('../models/User'); // Asegúrate de que la ruta sea correcta
 const bcrypt = require('bcryptjs');
 
 const loginUser = async (req, res) => {
     console.log("Función loginUser llamada");
-    const { username, password } = req.body;
+    const { username, password } = req.body; // Obtén el nombre de usuario y la contraseña del cuerpo de la solicitud
     console.log("Datos recibidos:", req.body);
     
     try {
@@ -28,7 +28,7 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ message: 'Contraseña inválida' });
         }
 
-        res.json({ message: 'LOGIN EXITOSO' });
+        res.json({ message: true });
     } catch (error) {
         console.log('Error en el servidor:', error);
         res.status(500).json({ message: 'Error en el servidor', error });

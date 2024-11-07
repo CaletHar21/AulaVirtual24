@@ -19,7 +19,7 @@ const Home = () => {
       style={styles.option}
       onPress={() => {
         if (item.title === 'Cursos') {
-          navigation.navigate('Cursos'); // Navega a la pantalla de Cursos
+          navigation.navigate('Cursos'); 
         }
         if(item.title==='Foro'){
             navigation.navigate('Foro');
