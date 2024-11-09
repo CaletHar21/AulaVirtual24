@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Pressable, Alert, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Importamos AsyncStorage
 
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
@@ -13,10 +14,18 @@ const LoginScreen = () => {
     const credentials = { username, password };
 
     try {
-      const response = await axios.post('http://172.16.164.125:5000/api/login', credentials);
+      const response = await axios.post('http://localhost:5000/api/login', credentials);
       console.log('Respuesta del servidor:', response.data);
 
-      if (response.data = true) { 
+      // Verificar que la respuesta contiene 'message', 'rol', 'nombres', y 'apellidos'
+      if (response.data && response.data.message === true && response.data.rol !== undefined) {
+        // Guardamos el rol, nombres y apellidos en AsyncStorage
+        console.log('Usuario logueado con rol:', response.data.rol);
+        await AsyncStorage.setItem('userRole', response.data.rol.toString()); // Guardamos el rol
+        await AsyncStorage.setItem('userNames', response.data.nombres); // Guardamos el nombre
+        await AsyncStorage.setItem('userLastNames', response.data.apellidos); // Guardamos los apellidos
+
+        // Navegar al HomeTabs si el login fue exitoso
         navigation.navigate('HomeTabs');
       } else {
         Alert.alert('Error', 'Usuario o contraseña incorrectos.');
@@ -42,7 +51,7 @@ const LoginScreen = () => {
     >
       <View style={styles.innerContainer}>
         <Image
-          source={require('C:/Users/ctorrez/Music/AulaVirtual24/AulaVirtualItca24/assets/logoitca.png')}
+          source={require('../../../assets/logoitca.png')}
           style={styles.logo}
         />
         <Text style={styles.title}>Iniciar Sesión</Text>
@@ -66,9 +75,6 @@ const LoginScreen = () => {
         </Pressable>
         <Pressable onPress={() => navigation.navigate('Recuperar')}>
           <Text style={styles.registerText}>Olvidé mi Contraseña</Text>
-        </Pressable>
-        <Pressable onPress={() => navigation.navigate('Registro')}>
-          <Text style={styles.registerText}>¿No tienes una cuenta? Regístrate aquí</Text>
         </Pressable>
       </View>
     </LinearGradient>
