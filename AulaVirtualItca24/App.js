@@ -18,6 +18,8 @@ import Calendario from './frontend/src/alumno/Calendario';
 import QuizJava from './frontend/src/alumno/QuizJava';
 import MaterialEstudioMate from './frontend/src/alumno/MaterialEstudioMate';
 import Recuperar from './frontend/src/alumno/Recuperar'; 
+import Perfil from './frontend/src/alumno/Perfil';
+
 
 
 const Stack = createStackNavigator();
@@ -90,6 +92,9 @@ const App = () => {
           <Stack.Screen name="MaterialEstudioMate" component={MaterialEstudioMate} />
           <Stack.Screen name="Foro" component={ForumsScreen} />
           <Stack.Screen name="Recuperar" component={Recuperar} />
+          <Stack.Screen name="Perfil" component={Perfil} />
+          
+
         </Stack.Navigator>
       </View>
     </NavigationContainer>
