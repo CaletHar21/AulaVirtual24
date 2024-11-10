@@ -5,6 +5,7 @@ const cors = require('cors'); // Importa cors
 
 const loginRoutes = require('./routes/loginRoutes');
 const registroRoutes = require('./routes/registroRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 dotenv.config();
 const app = express();
@@ -36,6 +37,7 @@ mongoose.connect(process.env.MONGO_URI)
 // Definición de rutas
 app.use('/api', loginRoutes);
 app.use('/api', registroRoutes);
+app.use('/api', userRoutes);
 
 // Inicio del servidor
 const PORT = process.env.PORT || 5000;

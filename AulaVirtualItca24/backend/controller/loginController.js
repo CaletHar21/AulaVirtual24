@@ -33,8 +33,12 @@ const loginUser = async (req, res) => {
             message: true,
             rol: user.rol,  // El rol del usuario
             nombres: user.nombres,  // Nombre del usuario
-            apellidos: user.apellidos  // Apellidos del usuario
-        });
+            apellidos: user.apellidos, 
+            correo: user.correo,
+            id: user.id,
+            telefono: user.telefono
+                       // Apellidos del usuario
+        }); 
 
     } catch (error) {
         console.log('Error en el servidor:', error);
