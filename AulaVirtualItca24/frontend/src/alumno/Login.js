@@ -1,20 +1,23 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react'; // Importamos useEffect
+import React, { useState } from 'react'; // Importamos useState
 import { View, Text, TextInput, StyleSheet, Pressable, Alert, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';  // Asegúrate de importar esto
 
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
-  // Usamos useEffect para vaciar los campos de texto cada vez que se navegue a la pantalla de login
-  useEffect(() => {
-    setUsername('');  // Asegura que el campo de username esté vacío
-    setPassword('');  // Asegura que el campo de password esté vacío
-  }, []);  // El [] asegura que solo se ejecute una vez al montar el componente
+  // Limpiar campos cuando la pantalla obtiene el enfoque
+  useFocusEffect(
+    React.useCallback(() => {
+      setUsername('');  // Asegura que el campo de username esté vacío
+      setPassword('');  // Asegura que el campo de password esté vacío
+    }, [])
+  );
 
   const handleLogin = async () => {
     const credentials = { username, password };
@@ -33,7 +36,6 @@ const LoginScreen = () => {
         await AsyncStorage.setItem('userCorreo', response.data.correo); // Guardamos los apellidos
         await AsyncStorage.setItem('userId', response.data.id);
         await AsyncStorage.setItem('userPhone', response.data.telefono);
-
 
         // Navegar al HomeTabs si el login fue exitoso
         navigation.navigate('HomeTabs');

@@ -19,6 +19,7 @@ import QuizJava from './frontend/src/alumno/QuizJava';
 import MaterialEstudioMate from './frontend/src/alumno/MaterialEstudioMate';
 import Recuperar from './frontend/src/alumno/Recuperar'; 
 import Perfil from './frontend/src/alumno/Perfil';
+import Cursos1 from './frontend/src/alumno/Cursos1';
 
 
 
@@ -93,6 +94,7 @@ const App = () => {
           <Stack.Screen name="Foro" component={ForumsScreen} />
           <Stack.Screen name="Recuperar" component={Recuperar} />
           <Stack.Screen name="Perfil" component={Perfil} />
+          <Stack.Screen name="Cursos1" component={Cursos1} />
           
 
         </Stack.Navigator>

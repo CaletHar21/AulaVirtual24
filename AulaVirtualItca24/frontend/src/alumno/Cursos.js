@@ -1,107 +1,237 @@
-import React from 'react';
-import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
- 
-// Datos de ejemplo para los cursos
-const courses = [
-  { id: '1', title: 'Curso de React Native' , img: require('../../../assets/react.png') },
-  { id: '2', title: 'Curso de JavaScript', img: require('../../../assets/java.png') },
-  { id: '3', title: 'Curso de Diseño UX/UI' , img: require('../../../assets/diseno.png') },
-  { id: '4', title: 'Matematicas Avanzada calculo 4' , img: require('../../../assets/mate.png') },
-  // Agrega más cursos aquí
-];
- 
-// Modificamos el componente para recibir la prop de `navigation`
-const Cursos = ({ navigation }) => {
- 
-  // Función para renderizar cada elemento de la lista
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.courseItem}
-      onPress={() => {
-        console.log(`Navegando a ${item.title}`);
-        switch (item.title) {
-          case 'Curso de JavaScript':
-            navigation.navigate('MaterialEstudioJava');
-            break;
-          case 'Curso de React Native':
-            navigation.navigate('MaterialEstudioReactNative');
-            break;
-          case 'Curso de Diseño UX/UI':
-            navigation.navigate('MaterialEstudioUXUI');
-            break;
-          case 'Matematicas Avanzada calculo 4':
-            navigation.navigate('MaterialEstudioMate');
-            break;
-          default:
-            console.log('Curso no encontrado');
-            break;
-        }
-      }}
-    >
-      <Image source={item.img} style={styles.image} />  
-      <Text style={styles.courseTitle}>{item.title}</Text>
-    </TouchableOpacity>
-  );
- 
-  return (
-    <View style={styles.container}> 
-      <View style={styles.innerContainer}>
-        <Text style={styles.title}>CURSOS</Text> 
-        <FlatList
-          data={courses}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-        />
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TextInput, Button, StyleSheet, ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
+import axios from 'axios';
+
+// Aquí debes importar tus componentes para las pantallas correspondientes
+// Reemplaza estos nombres por las pantallas que ya tienes
+
+
+import MaterialEstudioReactNative from '../alumno/MaterialEstudioReactNative';
+import MaterialEstudioJava from '../alumno/MaterialEstudioJava';
+import MaterialEstudioUXUI from '../alumno/MaterialEstudioUXUI';
+import MaterialEstudioMate from '../alumno/MaterialEstudioMate';
+
+const Cursos1 = ({ navigation }) => {
+  const [cursos, setCursos] = useState([]);  // Almacenamos los cursos combinados
+  const [cargando, setCargando] = useState(true); // Estado de carga
+  const [error, setError] = useState(null);     // Estado de error
+
+  // Estados para el formulario de crear curso
+  const [nombreCurso, setNombreCurso] = useState('');
+  const [abreviatura, setAbreviatura] = useState('');
+  const [fechaInicio, setFechaInicio] = useState('');
+  const [fechaFin, setFechaFin] = useState('');
+  const [cupoMaximo, setCupoMaximo] = useState('');
+  const [estatus, setEstatus] = useState('');
+  const [img, setImg] = useState('');
+  const [mostrandoFormulario, setMostrandoFormulario] = useState(false);
+
+  // Cursos locales
+  const cursosLocales = [
+    { id: '1', nombreCurso: 'Curso de React Native', screen: 'MaterialEstudioReactNative' },
+    { id: '2', nombreCurso: 'Curso de JavaScript', screen: 'MaterialEstudioJava' },
+    { id: '3', nombreCurso: 'Curso de Diseño UX/UI', screen: 'MaterialEstudioUXUI' },
+    { id: '4', nombreCurso: 'Matemáticas Avanzada Cálculo 4', screen: 'MaterialEstudioMate' },
+  ];
+
+  // Función que obtiene los cursos desde la API
+  const obtenerCursos = async () => {
+    try {
+      const respuesta = await axios.get('http://localhost:5000/api/courses');
+      setCursos(respuesta.data);  // Almacenamos los cursos de la base de datos en el estado
+      setCargando(false);  // Dejamos de cargar
+    } catch (err) {
+      setError(err.message);  // Si ocurre un error, lo mostramos
+      setCargando(false);  // Dejamos de cargar
+    }
+  };
+
+  // Función para crear un nuevo curso
+  const crearCurso = async () => {
+    if (!nombreCurso || !abreviatura || !fechaInicio || !fechaFin || !cupoMaximo) {
+      Alert.alert('Por favor, complete todos los campos obligatorios.');
+      return;
+    }
+
+    const fechaInicioDate = new Date(fechaInicio);
+    const fechaFinDate = new Date(fechaFin);
+
+    if (isNaN(fechaInicioDate.getTime()) || isNaN(fechaFinDate.getTime())) {
+      Alert.alert('Por favor, ingrese fechas válidas');
+      return;
+    }
+
+    try {
+      const nuevoCurso = {
+        nombreCurso,
+        abreviatura,
+        fechaInicio: fechaInicioDate,
+        fechaFin: fechaFinDate,
+        cupoMaximo: parseInt(cupoMaximo),
+        estatus,
+        img,
+      };
+
+      await axios.post('http://localhost:5000/api/courses', nuevoCurso);
+
+      // Limpiar los campos del formulario
+      setNombreCurso('');
+      setAbreviatura('');
+      setFechaInicio('');
+      setFechaFin('');
+      setCupoMaximo('');
+      setEstatus('');
+      setImg('');
+
+      // Volver a obtener los cursos para actualizar la lista
+      obtenerCursos();
+      Alert.alert('Curso creado con éxito');
+      setMostrandoFormulario(false); // Ocultar el formulario después de crear el curso
+    } catch (err) {
+      console.error('Error al crear el curso', err);
+      Alert.alert('Error al crear el curso', err.message);
+    }
+  };
+
+  // Usamos useEffect para cargar los cursos de la base de datos
+  useEffect(() => {
+    obtenerCursos();
+  }, []);
+
+  // Combinar los cursos locales con los cursos obtenidos de la base de datos
+  const cursosCombinados = [...cursosLocales, ...cursos];
+
+  // Renderizamos la pantalla de carga o los cursos según el estado
+  if (cargando) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <Text>Error: {error}</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.titulo}>Cursos Disponibles</Text>
+
+      {/* Botón para mostrar el formulario de crear curso */}
+      <Button title="Crear Nuevo Curso" onPress={() => setMostrandoFormulario(true)} />
+
+      {/* Si estamos mostrando el formulario, renderizamos los campos */}
+      {mostrandoFormulario && (
+        <View style={styles.formulario}>
+          <TextInput
+            style={styles.input}
+            placeholder="Nombre del curso"
+            value={nombreCurso}
+            onChangeText={setNombreCurso}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Abreviatura"
+            value={abreviatura}
+            onChangeText={setAbreviatura}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Fecha de inicio (YYYY-MM-DD)"
+            value={fechaInicio}
+            onChangeText={setFechaInicio}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Fecha de fin (YYYY-MM-DD)"
+            value={fechaFin}
+            onChangeText={setFechaFin}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Cupo máximo"
+            keyboardType="numeric"
+            value={cupoMaximo}
+            onChangeText={setCupoMaximo}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Estatus (opcional)"
+            value={estatus}
+            onChangeText={setEstatus}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="URL de la imagen (opcional)"
+            value={img}
+            onChangeText={setImg}
+          />
+          <Button title="Crear Curso" onPress={crearCurso} />
+        </View>
+      )}
+
+      {/* Mostrar los cursos combinados (locales + API) */}
+      <FlatList
+        data={cursosCombinados}
+        keyExtractor={(item) => item.id} // Usamos 'id' como clave única para todos los elementos
+        renderItem={({ item }) => (
+          <View style={styles.itemCurso}>
+            {/* Si es un curso local, al hacer clic vamos a la pantalla correspondiente */}
+            {item.id <= 4 ? (
+              <TouchableOpacity onPress={() => navigation.navigate(item.screen)}>
+                <Text style={styles.nombreCurso}>{item.nombreCurso}</Text>
+              </TouchableOpacity>
+            ) : (
+              <Text style={styles.nombreCurso}>{item.nombreCurso}</Text>
+            )}
+          </View>
+        )}
+      />
     </View>
   );
 };
- 
-// Estilos de la pantalla
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: 'black', // Fondo negro
+    padding: 20,
   },
-  innerContainer: {
-    width: '100%',
-    paddingHorizontal: 20,
-    backgroundColor: 'transparent',
-  },
-  title: {
-    fontSize: 28,
+  titulo: {
+    fontSize: 24,
     fontWeight: 'bold',
-    color: 'red', // Texto rojo
-    marginBottom: 30,
-    textAlign: 'center',
-    textShadowColor: 'red', // Color del borde
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
+    marginBottom: 20,
   },
-  courseItem: {
-    padding: 15,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    backgroundColor: '#2c2c2c',
-    borderRadius: 10,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+  formulario: {
+    width: '100%',
+    marginBottom: 20,
   },
-  image: {
-    width: 40,
+  input: {
     height: 40,
-    marginRight: 10,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingLeft: 10,
+    width: '100%',
+    borderRadius: 5,
   },
-  courseTitle: {
+  itemCurso: {
+    backgroundColor: '#f8f8f8',
+    padding: 15,
+    marginVertical: 10,
+    borderRadius: 8,
+    width: '100%',
+  },
+  nombreCurso: {
     fontSize: 18,
-    color: 'white',
+    fontWeight: 'bold',
   },
 });
- 
-export default Cursos;
+
+export default Cursos1;

@@ -84,7 +84,8 @@ const Perfil = () => {
   };
 
   const handleLogout = () => {
-    Alert.alert('Cerrar sesión', '¿Estás seguro de que quieres cerrar sesión?');
+   
+    navigation.navigate('Login');
     // Lógica para cerrar sesión (limpiar datos, redirigir a Login, etc.)
   };
 
