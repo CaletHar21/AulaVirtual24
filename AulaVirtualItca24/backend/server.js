@@ -7,6 +7,7 @@ const loginRoutes = require('./routes/loginRoutes');
 const registroRoutes = require('./routes/registroRoutes');
 const userRoutes = require('./routes/userRoutes');
 const cursoRoutes = require('./routes/cursoRoutes');
+const recuperarRoutes = require('./routes/recuperarRoutes');
 
 dotenv.config();
 const app = express();
@@ -40,6 +41,7 @@ app.use('/api', loginRoutes);
 app.use('/api', registroRoutes);
 app.use('/api', userRoutes);
 app.use('/api', cursoRoutes);
+app.use('/api', recuperarRoutes);
 
 // Inicio del servidor
 const PORT = process.env.PORT || 5000;

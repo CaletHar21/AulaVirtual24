@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // Usamos 
 const options = [
   { id: 1, title: 'Cursos', img: require('../../../assets/cursos.png') },
   { id: 2, title: 'Foro', img: require('../../../assets/foro.png') },
-  { id: 3, title: 'Cursos con BD', img: require('../../../assets/LoginLogo.png') },
+  { id: 3, title: 'Opcion 3', img: require('../../../assets/LoginLogo.png') },
   { id: 4, title: 'Opción 4', img: require('../../../assets/LoginLogo.png') },
   { id: 5, title: 'Opción 5', img: require('../../../assets/LoginLogo.png') },
   { id: 6, title: 'Opción 6', img: require('../../../assets/LoginLogo.png') },

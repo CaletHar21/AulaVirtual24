@@ -1,9 +1,12 @@
 const express = require('express');
-const { recuperarContrasena } = require('../controller/recuperarController');
+const { verificarUsuario, cambiarContrasena } = require('../controller/recuperarController');
 
 const router = express.Router();
 
-// Ruta para recuperar la contraseña
-router.post('/recuperar', recuperarContrasena);
+// Ruta para verificar si el usuario existe
+router.post('/verificar-usuario', verificarUsuario);
+
+// Ruta para cambiar la contraseña
+router.post('/cambiar-contrasena', cambiarContrasena);
 
 module.exports = router;
