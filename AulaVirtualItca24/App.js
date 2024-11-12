@@ -22,8 +22,7 @@ import MaterialEstudioMate from './frontend/src/alumno/MaterialEstudioMate';
 import Recuperar from './frontend/src/alumno/Recuperar'; 
 import Perfil from './frontend/src/alumno/Perfil';
 import Cursos1 from './frontend/src/alumno/Cursos1';
-import QuizUx from './frontend/src/alumno/QuizUx';
-
+import forumsScreen from './frontend/src/alumno/ForumsScreen';
 
 
 
@@ -102,6 +101,8 @@ const App = () => {
           <Stack.Screen name="Recuperar" component={Recuperar} />
           <Stack.Screen name="Perfil" component={Perfil} />
           <Stack.Screen name="Cursos1" component={Cursos1} />
+          
+
         </Stack.Navigator>
       </View>
     </NavigationContainer>
