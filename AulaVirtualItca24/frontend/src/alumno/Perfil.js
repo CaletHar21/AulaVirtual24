@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, Image, Dimensions } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { LinearGradient } from 'expo-linear-gradient';  // Importar LinearGradient
 
-const Perfil = () => {
+const Perfil = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [userLastName, setUserLastName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -11,7 +12,6 @@ const Perfil = () => {
   const [userId, setUserId] = useState(''); // Estado para guardar el ID
   const [isEditing, setIsEditing] = useState(false);
 
-  // Este hook se ejecuta una sola vez al montar el componente
   useEffect(() => {
     const getUserDataFromStorage = async () => {
       try {
@@ -84,17 +84,26 @@ const Perfil = () => {
   };
 
   const handleLogout = () => {
-   
     navigation.navigate('Login');
     // Lógica para cerrar sesión (limpiar datos, redirigir a Login, etc.)
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['#85282f', '#e8ecf9', '#e8ecf9', '#fdfdfd']}  // Colores del gradiente
+      style={[styles.container, { height: Dimensions.get('window').height }]}  // Estilo responsivo
+    >
+      <View style={styles.imageContainer}>
+        <Image 
+          source={require('../../../assets/LoginLogo.png')} // Cambia por la imagen que desees
+          style={[styles.profileImage, { tintColor: '#c87075' }]} // Aplica el color tint
+        />
+      </View>
+
       <View style={styles.profileHeader}>
         <View style={styles.infoRow}>
           <Text style={styles.label}>Nombre:</Text>
-          <Text style={styles.value}>{userName} (ID: {userId})</Text> {/* Mostrar el ID junto al nombre */}
+          <Text style={styles.value}>{userName}</Text>
         </View>
         <View style={styles.infoRow}>
           <Text style={styles.label}>Apellido:</Text>
@@ -141,7 +150,7 @@ const Perfil = () => {
       <TouchableOpacity style={styles.button} onPress={handleLogout}>
         <Text style={styles.buttonText}>Cerrar sesión</Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -149,8 +158,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    marginBottom: 20,  // Espacio entre la imagen y el resto del contenido
+  },
+  profileImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,  // Esto hace que la imagen sea redonda
+    borderWidth: 2,
+    borderColor: '#fff',
   },
   profileHeader: {
     alignItems: 'flex-start',

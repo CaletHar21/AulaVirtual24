@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput, Button, Alert } from 'react-native';
-
+// Ruta para obtener todos los foros
 const ForumsScreen = ({ navigation }) => {
     const [forums, setForums] = useState([]);
     const [newTitulo, setNewTitulo] = useState('');

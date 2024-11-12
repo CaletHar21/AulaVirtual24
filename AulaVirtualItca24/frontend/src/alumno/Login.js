@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react'; // Importamos useState
-import { View, Text, TextInput, StyleSheet, Pressable, Alert, Image } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable, Alert, Image, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -56,15 +56,20 @@ const LoginScreen = () => {
     }
   };
 
+  // Obtener el ancho de la pantalla
+  const screenWidth = Dimensions.get('window').width;
+
   return (
     <LinearGradient
       colors={['#85282f', '#873b41', '#e8ecf9', '#fdfdfd']}
       style={styles.container}
     >
       <View style={styles.innerContainer}>
+        {/* Imagen Logo Responsiva */}
         <Image
           source={require('../../../assets/logoitca.png')}
-          style={styles.logo}
+          style={[styles.logo, { width: screenWidth * 0.8, height: undefined }]} // Imagen escalable
+          resizeMode="contain" // Mantener la proporción de la imagen
         />
         <Text style={styles.title}>Iniciar Sesión</Text>
         <TextInput
@@ -106,9 +111,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 475, // Ajusta el tamaño según sea necesario
-    height: 100,
     marginBottom: 20,
+    width: '80%', // El ancho es el 80% de la pantalla
+    height: undefined, // Mantener la proporción de la imagen
   },
   title: {
     fontSize: 28,

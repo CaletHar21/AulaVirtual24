@@ -4,6 +4,7 @@ const router = express.Router();
 const Foro = require('../models/forumModel');
 
 // Ruta para obtener todos los foros
+// Ruta para obtener todos los foros
 router.get('/foros', async (req, res) => {
     try {
         const foros = await Foro.find();
@@ -15,7 +16,7 @@ router.get('/foros', async (req, res) => {
 });
 
 // Ruta para crear un nuevo foro
-router.post('/foros', async (req, res) => {
+router.post('/foros', async (req, res) => {  
     const { titulo, comentario, cursoId, usuarioId } = req.body;
     try {
         const newForo = new Foro({ titulo, comentario, cursoId, usuarioId });

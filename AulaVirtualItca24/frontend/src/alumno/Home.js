@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginBottom: 20,
     textAlign: 'center',
+    marginTop: 80, // Mueve el mensaje de bienvenida más abajo
   },
   row: {
     justifyContent: 'space-between',

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const QuizJava = () => {
+const QuizMate = () => {
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -11,11 +11,11 @@ const QuizJava = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
 
   const questions = [
-    { id: 1, question: 'JavaScript es un lenguaje de programación web.', type: 'true/false', correctAnswer: 'true' },
-    { id: 2, question: 'Las funciones en JavaScript siempre devuelven un valor.', type: 'true/false', correctAnswer: 'false' },
-    { id: 3, question: '¿Cuál de las siguientes es una manera correcta de declarar una función en JavaScript?', options: ['function miFuncion()', 'def miFuncion()', 'func miFuncion()'], type: 'multiple', correctAnswer: 'function miFuncion()' },
-    { id: 4, question: 'Completa la frase: `var __ = 10; console.log(__)`', type: 'fill-in', correctAnswer: 'x' },
-    { id: 5, question: 'Arrastra el número correcto para declarar una función: `function __()`', type: 'drag', correctAnswer: 'miFuncion' },
+    { id: 1, question: 'La derivada de sin(x) es cos(x).', type: 'true/false', correctAnswer: 'true' },
+    { id: 2, question: 'La integral de e^x es x*e^(x).', type: 'true/false', correctAnswer: 'false' },
+    { id: 3, question: '¿Cuál de las siguientes es la serie de Taylor de e^x?', options: ['1 + x + x^2/2 + x^3/6 + ...', 'x + x^2/2 + x^3/3 + ...', '1 - x + x^2 - x^3 + ...'], type: 'multiple', correctAnswer: '1 + x + x^2/2 + x^3/6 + ...' },
+    { id: 4, question: 'Completa: La derivada de ln(x) es ___.', type: 'fill-in', correctAnswer: '1/x' },
+    { id: 5, question: 'Arrastra el número correcto para la integral de x^2 dx:', type: 'drag', correctAnswer: 'x^3/3' },
   ];
 
   useEffect(() => {
@@ -24,11 +24,11 @@ const QuizJava = () => {
         setTimeLeft(prevTime => prevTime - 1);
       } else {
         clearInterval(timer);
-        if (!quizCompleted) calculateScore(); // Calcular la puntuación cuando se acaba el tiempo
+        if (!quizCompleted) calculateScore();
       }
     }, 1000);
 
-    return () => clearInterval(timer); // Limpiar el timer al desmontar el componente
+    return () => clearInterval(timer);
   }, [timeLeft, quizCompleted]);
 
   const handleAnswerChange = (questionId, answer) => {
@@ -36,7 +36,7 @@ const QuizJava = () => {
       ...prevAnswers,
       [questionId]: answer
     }));
-    setSelectedAnswer(answer); // Actualizar la respuesta seleccionada para el efecto visual
+    setSelectedAnswer(answer);
   };
 
   const calculateScore = () => {
@@ -122,7 +122,7 @@ const QuizJava = () => {
         </View>
       );
     } else if (currentQuestion.type === 'drag') {
-      // Implementar la pregunta de arrastre aquí (esto depende de cómo quieres manejar el arrastre)
+      // Implementar la pregunta de arrastre aquí
     }
   };
 
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   selectedAnswer: {
-    backgroundColor: 'yellow', // Color de fondo cuando la respuesta es seleccionada
+    backgroundColor: 'yellow',
     shadowColor: 'yellow',
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 5,
@@ -272,4 +272,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuizJava;
+export default QuizMate;

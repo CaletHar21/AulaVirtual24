@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
  
-// Pantallas
+// Pantallas/vistas
 import Login from './frontend/src/alumno/Login';
 import Registro from './frontend/src/alumno/Registro';
 import Cursos from './frontend/src/alumno/Cursos';
@@ -16,11 +16,14 @@ import Home from './frontend/src/alumno/Home';
 import ForumsScreen from './frontend/src/alumno/ForumsScreen';
 import Calendario from './frontend/src/alumno/Calendario';
 import QuizJava from './frontend/src/alumno/QuizJava';
+import QuizMate from './frontend/src/alumno/QuizMate';
+import QuizNative from './frontend/src/alumno/QuizNative';
 import MaterialEstudioMate from './frontend/src/alumno/MaterialEstudioMate';
 import Recuperar from './frontend/src/alumno/Recuperar'; 
 import Perfil from './frontend/src/alumno/Perfil';
 import Cursos1 from './frontend/src/alumno/Cursos1';
-import forumsScreen from './frontend/src/alumno/ForumsScreen';
+import QuizUx from './frontend/src/alumno/QuizUx';
+
 
 
 
@@ -91,6 +94,9 @@ const App = () => {
           <Stack.Screen name="MaterialEstudioReactNative" component={MaterialEstudioReactNative} />
           <Stack.Screen name="MaterialEstudioUXUI" component={MaterialEstudioUXUI} />
           <Stack.Screen name="QuizJava" component={QuizJava} />
+          <Stack.Screen name="QuizMate" component={QuizMate} />
+          <Stack.Screen name="QuizNative" component={QuizNative}/> 
+          <Stack.Screen name="QuizUx" component={QuizUx} />
           <Stack.Screen name="MaterialEstudioMate" component={MaterialEstudioMate} />
           <Stack.Screen name="Foro" component={ForumsScreen} />
           <Stack.Screen name="Recuperar" component={Recuperar} />

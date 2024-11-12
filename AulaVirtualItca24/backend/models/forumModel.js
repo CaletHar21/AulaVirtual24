@@ -6,5 +6,5 @@ const forumSchema = new mongoose.Schema({
     cursoId: { type: mongoose.Schema.Types.ObjectId, required: true },
     usuarioId: { type: mongoose.Schema.Types.ObjectId, required: true },
 }, { collection: 'foros' }); // Aseguramos el nombre de la colección 'foros'
-
+// Aseguramos el nombre de la colección 'foros'
 module.exports = mongoose.model('Foro', forumSchema);
