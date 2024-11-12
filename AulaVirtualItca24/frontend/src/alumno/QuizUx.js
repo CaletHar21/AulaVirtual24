@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const QuizJava = () => {
+const QuizUx = () => {
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -11,11 +11,11 @@ const QuizJava = () => {
   const [quizCompleted, setQuizCompleted] = useState(false);
 
   const questions = [
-    { id: 1, question: 'JavaScript es un lenguaje de programación web.', type: 'true/false', correctAnswer: 'true' },
-    { id: 2, question: 'Las funciones en JavaScript siempre devuelven un valor.', type: 'true/false', correctAnswer: 'false' },
-    { id: 3, question: '¿Cuál de las siguientes es una manera correcta de declarar una función en JavaScript?', options: ['function miFuncion()', 'def miFuncion()', 'func miFuncion()'], type: 'multiple', correctAnswer: 'function miFuncion()' },
-    { id: 4, question: 'Completa la frase: `var __ = 10; console.log(__)`', type: 'fill-in', correctAnswer: 'x' },
-    { id: 5, question: 'Arrastra el número correcto para declarar una función: `function __()`', type: 'drag', correctAnswer: 'miFuncion' },
+    { id: 1, question: 'La usabilidad es un aspecto clave en UX.', type: 'true/false', correctAnswer: 'true' },
+    { id: 2, question: 'El diseño UI se enfoca en cómo se siente una aplicación, no en cómo se ve.', type: 'true/false', correctAnswer: 'false' },
+    { id: 3, question: '¿Cuál de los siguientes es un principio de diseño UX?', options: ['Claridad', 'Adaptabilidad', 'Estabilidad'], type: 'multiple', correctAnswer: 'Claridad' },
+    { id: 4, question: 'Completa: Un buen diseño UX debe ser ___ y fácil de entender.', type: 'fill-in', correctAnswer: 'intuitivo' },
+    { id: 5, question: 'Arrastra la respuesta correcta: El diseño centrado en el usuario pone al ___ como el foco del diseño.', type: 'drag', correctAnswer: 'usuario' },
   ];
 
   useEffect(() => {
@@ -24,11 +24,11 @@ const QuizJava = () => {
         setTimeLeft(prevTime => prevTime - 1);
       } else {
         clearInterval(timer);
-        if (!quizCompleted) calculateScore(); // Calcular la puntuación cuando se acaba el tiempo
+        if (!quizCompleted) calculateScore();
       }
     }, 1000);
 
-    return () => clearInterval(timer); // Limpiar el timer al desmontar el componente
+    return () => clearInterval(timer);
   }, [timeLeft, quizCompleted]);
 
   const handleAnswerChange = (questionId, answer) => {
@@ -36,7 +36,7 @@ const QuizJava = () => {
       ...prevAnswers,
       [questionId]: answer
     }));
-    setSelectedAnswer(answer); // Actualizar la respuesta seleccionada para el efecto visual
+    setSelectedAnswer(answer);
   };
 
   const calculateScore = () => {
@@ -122,7 +122,7 @@ const QuizJava = () => {
         </View>
       );
     } else if (currentQuestion.type === 'drag') {
-      // Implementar la pregunta de arrastre aquí (esto depende de cómo quieres manejar el arrastre)
+      // Implementar la pregunta de arrastre aquí
     }
   };
 
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   selectedAnswer: {
-    backgroundColor: 'yellow', // Color de fondo cuando la respuesta es seleccionada
+    backgroundColor: 'yellow',
     shadowColor: 'yellow',
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 5,
@@ -272,4 +272,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QuizJava;
+export default QuizUx;

@@ -1,6 +1,7 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Linking, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Linking, Alert, CheckBox } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Datos de ejemplo para el material de estudio del curso de Diseño UX/UI
 const studyMaterial = [
@@ -10,8 +11,39 @@ const studyMaterial = [
   // Agrega más enlaces aquí
 ];
 
-const MaterialEstudioUXUI = () => {
-  // Función para abrir enlaces de YouTube
+const MaterialEstudioUXUI = ({ navigation }) => {
+  const [checkedItems, setCheckedItems] = useState({});
+  const [timer, setTimer] = useState(0);
+
+  useEffect(() => {
+    const getStoredTime = async () => {
+      try {
+        const storedTime = await AsyncStorage.getItem('studyTimeUXUI');
+        if (storedTime !== null) {
+          setTimer(parseInt(storedTime));
+        }
+      } catch (error) {
+        console.error('Error al recuperar el tiempo:', error);
+      }
+    };
+
+    getStoredTime();
+
+    const interval = setInterval(() => setTimer(prev => prev + 1), 1000);
+    return () => {
+      clearInterval(interval);
+      storeTime();
+    };
+  }, []);
+
+  const storeTime = async () => {
+    try {
+      await AsyncStorage.setItem('studyTimeUXUI', timer.toString());
+    } catch (error) {
+      console.error('Error al guardar el tiempo:', error);
+    }
+  };
+
   const openLink = (url) => {
     Linking.openURL(url)
       .catch(err => {
@@ -20,25 +52,41 @@ const MaterialEstudioUXUI = () => {
       });
   };
 
-  // Renderizar cada elemento del material de estudio
+  const toggleCheck = (id) => {
+    setCheckedItems(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.materialItem} onPress={() => openLink(item.url)}>
-      <Text style={styles.materialTitle}>{item.title}</Text>
-    </TouchableOpacity>
+    <View style={styles.materialItem}>
+      <CheckBox
+        value={checkedItems[item.id] || false}
+        onValueChange={() => toggleCheck(item.id)}
+      />
+      <TouchableOpacity style={styles.materialContent} onPress={() => openLink(item.url)}>
+        <Text style={styles.materialTitle}>{item.title}</Text>
+      </TouchableOpacity>
+    </View>
   );
 
   return (
     <LinearGradient
-      colors={['#3b5998', '#fdfdfd', '#fdfdfd']}  // Colores del gradiente
+      colors={['#3b5998', '#fdfdfd', '#fdfdfd']}
       style={styles.container}
     >
       <View style={styles.innerContainer}>
+        <Text style={styles.timer}>{`Tiempo: ${timer}s`}</Text>
         <Text style={styles.title}>Material de Estudio - Diseño UX/UI</Text>
         <FlatList
           data={studyMaterial}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
+        <TouchableOpacity
+          style={styles.quizButton}
+          onPress={() => navigation.navigate('QuizUx')}
+        >
+          <Text style={styles.quizButtonText}>Quiz</Text>
+        </TouchableOpacity>
       </View>
     </LinearGradient>
   );
@@ -54,7 +102,17 @@ const styles = StyleSheet.create({
   innerContainer: {
     width: '100%',
     paddingHorizontal: 20,
-    backgroundColor: 'transparent', 
+    backgroundColor: 'transparent',
+  },
+  timer: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    fontSize: 16,
+    color: '#fff',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    padding: 5,
+    borderRadius: 5,
   },
   title: {
     fontSize: 28,
@@ -64,6 +122,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   materialItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 15,
     marginVertical: 8,
     marginHorizontal: 16,
@@ -75,9 +135,24 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
+  materialContent: {
+    flex: 1,
+    marginLeft: 8,
+  },
   materialTitle: {
     fontSize: 18,
-    color: '#333',  
+    color: '#333',
+  },
+  quizButton: {
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: '#ff7f50',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  quizButtonText: {
+    fontSize: 18,
+    color: '#fff',
   },
 });
 

@@ -20,6 +20,10 @@ import MaterialEstudioMate from './frontend/src/alumno/MaterialEstudioMate';
 import Recuperar from './frontend/src/alumno/Recuperar'; 
 import Perfil from './frontend/src/alumno/Perfil';
 import Cursos1 from './frontend/src/alumno/Cursos1';
+import ProgresoMaterias from './frontend/src/alumno/ProgresoMaterias';
+import QuizMate from './frontend/src/alumno/QuizMate';
+import QuizNative from './frontend/src/alumno/QuizNative';
+import QuizUx from './frontend/src/alumno/QuizUx';
 
 
 
@@ -95,6 +99,10 @@ const App = () => {
           <Stack.Screen name="Recuperar" component={Recuperar} />
           <Stack.Screen name="Perfil" component={Perfil} />
           <Stack.Screen name="Cursos1" component={Cursos1} />
+          <Stack.Screen name="ProgresoMaterias" component={ProgresoMaterias} />
+          <Stack.Screen name="QuizMate" component={QuizMate} />
+          <Stack.Screen name="QuizNative" component={QuizNative} />
+          <Stack.Screen name="QuizUx" component={QuizUx} />
           
 
         </Stack.Navigator>
