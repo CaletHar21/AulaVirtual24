@@ -1,31 +1,70 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput, Button } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput, Button, Alert } from 'react-native';
 
 const ForumsScreen = ({ navigation }) => {
-    const [forums, setForums] = useState([
-        { id: '1', title: 'Foro 1: Discusión General', description: 'Participa en conversaciones generales sobre cualquier tema de interés.' },
-        { id: '2', title: 'Foro 2: Temas de Salud', description: 'Discute temas relacionados con la salud y comparte consejos con la comunidad.' },
-    ]);
-    const [newTitle, setNewTitle] = useState('');
-    const [newDescription, setNewDescription] = useState('');
+    const [forums, setForums] = useState([]);
+    const [newTitulo, setNewTitulo] = useState('');
+    const [newComentario, setNewComentario] = useState('');
+    const [editingForum, setEditingForum] = useState(null);
 
-    const handleNavigateToDetail = (forumId, forumTitle) => {
-        navigation.navigate('ForumDetail', { forumId, forumTitle });
+    const cursoId = "672b87629d6b2e0b61357990";
+    const usuarioId = "672015ce049936826673b5eb";
+
+    useEffect(() => {
+        fetchForums();
+    }, []);
+
+    const fetchForums = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/foros');
+            if (!response.ok) throw new Error('Error al obtener los foros.');
+            const data = await response.json();
+            setForums(data);
+        } catch (error) {
+            console.error('Error al obtener los foros:', error);
+            Alert.alert('Error', 'No se pudieron cargar los foros. Inténtalo de nuevo.');
+        }
     };
 
-    const handleAddForum = () => {
-        if (newTitle.trim() && newDescription.trim()) {
-            const newForum = {
-                id: (forums.length + 1).toString(),
-                title: newTitle.trim(),
-                description: newDescription.trim(),
-            };
-            setForums([...forums, newForum]);
-            setNewTitle('');
-            setNewDescription('');
+    const handleAddOrUpdateForum = async () => {
+        if (newTitulo.trim() && newComentario.trim()) {
+            try {
+                const response = await fetch(`http://localhost:5000/api/foros${editingForum ? `/${editingForum._id}` : ''}`, {
+                    method: editingForum ? 'PUT' : 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ titulo: newTitulo.trim(), comentario: newComentario.trim(), cursoId, usuarioId }),
+                });
+
+                if (!response.ok) throw new Error('Error al crear o editar el foro.');
+                fetchForums();
+                setNewTitulo('');
+                setNewComentario('');
+                setEditingForum(null);
+                Alert.alert('Éxito', editingForum ? 'Foro editado exitosamente' : 'Foro agregado exitosamente');
+            } catch (error) {
+                console.error('Error al agregar o editar el foro:', error);
+                Alert.alert('Error', 'No se pudo agregar o editar el foro. Inténtalo de nuevo.');
+            }
         } else {
-            alert('Por favor, completa ambos campos antes de agregar un nuevo tema.');
+            Alert.alert('Aviso', 'Por favor, completa ambos campos antes de agregar o editar un tema.');
+        }
+    };
+
+    const handleEditForum = (forum) => {
+        setNewTitulo(forum.titulo);
+        setNewComentario(forum.comentario);
+        setEditingForum(forum);
+    };
+
+    const handleDeleteForum = async (forumId) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/foros/${forumId}`, { method: 'DELETE' });
+            if (!response.ok) throw new Error('Error al eliminar el foro.');
+            fetchForums();
+            Alert.alert('Éxito', 'Foro eliminado exitosamente');
+        } catch (error) {
+            console.error('Error al eliminar el foro:', error);
+            Alert.alert('Error', 'No se pudo eliminar el foro. Inténtalo de nuevo.');
         }
     };
 
@@ -33,34 +72,38 @@ const ForumsScreen = ({ navigation }) => {
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.title}>Foros de Discusión</Text>
 
-            {/* Formulario para agregar nuevo tema */}
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
                     placeholder="Título del nuevo foro"
-                    value={newTitle}
-                    onChangeText={setNewTitle}
+                    value={newTitulo}
+                    onChangeText={setNewTitulo}
                 />
                 <TextInput
                     style={styles.input}
-                    placeholder="Descripción del nuevo foro"
-                    value={newDescription}
-                    onChangeText={setNewDescription}
+                    placeholder="Comentario del nuevo foro"
+                    value={newComentario}
+                    onChangeText={setNewComentario}
                     multiline
                 />
-                <Button title="Agregar Foro" onPress={handleAddForum} />
+                <Button title={editingForum ? "Actualizar Foro" : "Agregar Foro"} onPress={handleAddOrUpdateForum} />
             </View>
 
-            {/* Lista de foros */}
             {forums.map((forum) => (
-                <TouchableOpacity
-                    key={forum.id}
-                    style={styles.forumCard}
-                    onPress={() => handleNavigateToDetail(forum.id, forum.title)}
-                >
-                    <Text style={styles.forumTitle}>{forum.title}</Text>
-                    <Text style={styles.forumDescription}>{forum.description}</Text>
-                </TouchableOpacity>
+                <View key={forum._id} style={styles.forumCard}>
+                    <View style={styles.forumContent}>
+                        <Text style={styles.forumTitle}>{forum.titulo}</Text>
+                        <Text style={styles.forumDescription}>{forum.comentario}</Text>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.editButton} onPress={() => handleEditForum(forum)}>
+                            <Text style={styles.buttonText}>Editar</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeleteForum(forum._id)}>
+                            <Text style={styles.buttonText}>Eliminar</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             ))}
         </ScrollView>
     );
@@ -102,6 +145,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     forumCard: {
+        flexDirection: 'row',
         backgroundColor: '#fff',
         borderRadius: 10,
         padding: 15,
@@ -112,6 +156,11 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 5 },
         shadowRadius: 10,
         elevation: 3,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    forumContent: {
+        flex: 1,
     },
     forumTitle: {
         fontSize: 20,
@@ -122,6 +171,26 @@ const styles = StyleSheet.create({
     forumDescription: {
         fontSize: 16,
         color: '#666',
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+    },
+    editButton: {
+        backgroundColor: '#4CAF50',
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderRadius: 5,
+        marginRight: 5,
+    },
+    deleteButton: {
+        backgroundColor: '#F44336',
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderRadius: 5,
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
     },
 });
 
