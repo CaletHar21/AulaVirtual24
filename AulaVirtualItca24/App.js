@@ -17,12 +17,13 @@ import ForumsScreen from './frontend/src/alumno/ForumsScreen';
 import Calendario from './frontend/src/alumno/Calendario';
 import QuizJava from './frontend/src/alumno/QuizJava';
 import QuizMate from './frontend/src/alumno/QuizMate';
+import QuizUx from './frontend/src/alumno/QuizUx';
 import QuizNative from './frontend/src/alumno/QuizNative';
 import MaterialEstudioMate from './frontend/src/alumno/MaterialEstudioMate';
 import Recuperar from './frontend/src/alumno/Recuperar'; 
 import Perfil from './frontend/src/alumno/Perfil';
 import Cursos1 from './frontend/src/alumno/Cursos1';
-import forumsScreen from './frontend/src/alumno/ForumsScreen';
+
 
 
 

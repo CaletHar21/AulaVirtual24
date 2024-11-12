@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   },
   selectedAnswer: {
     backgroundColor: 'yellow', // Color de fondo cuando la respuesta es seleccionada
-    shadowColor: 'yellow',
+    shadowColor: 'yellow', // solo para probar
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 5,
     shadowOpacity: 0.7,
