@@ -53,7 +53,7 @@ const ForumsScreen = ({ navigation }) => {
                             style={styles.deleteButton}
                             onPress={() => handleDeleteForum(forum._id)}
                         >
-                            <Text style={styles.buttonText}>Eliminar</Text>
+                            <Text style={styles.buttonText}>Agregar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
