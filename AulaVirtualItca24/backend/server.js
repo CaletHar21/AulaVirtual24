@@ -9,6 +9,7 @@ const userRoutes = require('./routes/userRoutes');
 const cursoRoutes = require('./routes/cursoRoutes');
 const recuperarRoutes = require('./routes/recuperarRoutes');
 const forumRoutes = require('./routes/forumRoutes');
+const inscripcionRoutes= require('./routes/inscripcionRoutes');
 
 
 
@@ -46,6 +47,7 @@ app.use('/api', userRoutes);
 app.use('/api', cursoRoutes);
 app.use('/api', recuperarRoutes);
 app.use('/api', forumRoutes);
+app.use('/api', inscripcionRoutes);
 
 // Inicio del servidor
 const PORT = process.env.PORT || 5000;
