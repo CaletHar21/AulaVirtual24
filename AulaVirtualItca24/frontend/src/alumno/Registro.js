@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -12,6 +12,8 @@ const Registro = ({ navigation }) => {
   const [correo, setCorreo] = useState('');
   const [telefono, setTelefono] = useState('');
   const [rol, setRol] = useState(0); // Por defecto, el rol es 0
+  const [registroExitoso, setRegistroExitoso] = useState(false); // Estado para manejar el éxito del registro
+  const [errorMessage, setErrorMessage] = useState(''); // Para manejar mensajes de error
 
   const handleRegister = async () => {
     const user = {
@@ -36,16 +38,20 @@ const Registro = ({ navigation }) => {
       if (response.ok) {
         const data = await response.json();
         console.log(data.message);
-        Alert.alert('Registro exitoso', 'Usuario registrado correctamente');
-        navigation.navigate('Login'); // Navegar a la pantalla de Login
+        
+        // Cambiar el estado de registroExitoso a true para mostrar el mensaje en la pantalla
+        setRegistroExitoso(true);
+        setErrorMessage(''); // Limpiar cualquier mensaje de error
       } else {
         const errorData = await response.json();
         console.log('Error en el registro:', errorData.message);
-        Alert.alert('Error', errorData.message || 'Hubo un problema con el registro');
+        setErrorMessage(errorData.message || 'Hubo un error con el registro');
+        setRegistroExitoso(false);
       }
     } catch (error) {
       console.log('Error de conexión:', error);
-      Alert.alert('Error de conexión', 'No se pudo conectar con el servidor');
+      setErrorMessage('No se pudo conectar con el servidor');
+      setRegistroExitoso(false);
     }
   };
 
@@ -57,90 +63,108 @@ const Registro = ({ navigation }) => {
       <View style={styles.innerContainer}>
         <Text style={styles.title}>Registro de Usuario</Text>
 
-        <View style={styles.inputContainer}>
-          <Icon name="user" size={20} color="#aaa" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Nombre de usuario"
-            placeholderTextColor="#aaa"
-            value={username}
-            onChangeText={setUsername}
-          />
-        </View>
+        {!registroExitoso ? (
+          // Si no es exitoso, mostramos el formulario de registro
+          <>
+            {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
 
-        <View style={styles.inputContainer}>
-          <Icon name="user" size={20} color="#aaa" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Nombres"
-            placeholderTextColor="#aaa"
-            value={nombres}
-            onChangeText={setNombres}
-          />
-        </View>
+            <View style={styles.inputContainer}>
+              <Icon name="user" size={20} color="#aaa" style={styles.icon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Nombre de usuario"
+                placeholderTextColor="#aaa"
+                value={username}
+                onChangeText={setUsername}
+              />
+            </View>
 
-        <View style={styles.inputContainer}>
-          <Icon name="user" size={20} color="#aaa" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Apellidos"
-            placeholderTextColor="#aaa"
-            value={apellidos}
-            onChangeText={setApellidos}
-          />
-        </View>
+            <View style={styles.inputContainer}>
+              <Icon name="user" size={20} color="#aaa" style={styles.icon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Nombres"
+                placeholderTextColor="#aaa"
+                value={nombres}
+                onChangeText={setNombres}
+              />
+            </View>
 
-        <View style={styles.inputContainer}>
-          <Icon name="envelope" size={20} color="#aaa" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Correo electrónico"
-            placeholderTextColor="#aaa"
-            value={correo}
-            onChangeText={setCorreo}
-          />
-        </View>
+            <View style={styles.inputContainer}>
+              <Icon name="user" size={20} color="#aaa" style={styles.icon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Apellidos"
+                placeholderTextColor="#aaa"
+                value={apellidos}
+                onChangeText={setApellidos}
+              />
+            </View>
 
-        <View style={styles.inputContainer}>
-          <Icon name="phone" size={20} color="#aaa" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Número de teléfono (opcional)"
-            placeholderTextColor="#aaa"
-            value={telefono}
-            onChangeText={setTelefono}
-          />
-        </View>
+            <View style={styles.inputContainer}>
+              <Icon name="envelope" size={20} color="#aaa" style={styles.icon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Correo electrónico"
+                placeholderTextColor="#aaa"
+                value={correo}
+                onChangeText={setCorreo}
+              />
+            </View>
 
-        <View style={styles.inputContainer}>
-          <Icon name="lock" size={20} color="#aaa" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Contraseña"
-            placeholderTextColor="#aaa"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-        </View>
+            <View style={styles.inputContainer}>
+              <Icon name="phone" size={20} color="#aaa" style={styles.icon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Número de teléfono (opcional)"
+                placeholderTextColor="#aaa"
+                value={telefono}
+                onChangeText={setTelefono}
+              />
+            </View>
 
-        {/* Selección de rol (opcional, puedes predefinirlo) */}
-        {/* Para este caso, por simplicidad, mantenemos el rol por defecto 0. Puedes agregar lógica para que el usuario elija un rol si lo deseas. */}
-        <View style={styles.inputContainer}>
-          <Icon name="cogs" size={20} color="#aaa" style={styles.icon} />
-          <TextInput
-            style={styles.input}
-            placeholder="Rol (0 para usuario normal)"
-            placeholderTextColor="#aaa"
-            value={rol.toString()}
-            onChangeText={(text) => setRol(Number(text))}
-            keyboardType="numeric"
-          />
-        </View>
+            <View style={styles.inputContainer}>
+              <Icon name="lock" size={20} color="#aaa" style={styles.icon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Contraseña"
+                placeholderTextColor="#aaa"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+              />
+            </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleRegister}>
-          <Text style={styles.buttonText}>Registrar</Text>
-        </TouchableOpacity>
+            <View style={styles.inputContainer}>
+              <Icon name="cogs" size={20} color="#aaa" style={styles.icon} />
+              <TextInput
+                style={styles.input}
+                placeholder="Rol (0 para usuario normal)"
+                placeholderTextColor="#aaa"
+                value={rol.toString()}
+                onChangeText={(text) => setRol(Number(text))}
+                keyboardType="numeric"
+              />
+            </View>
+
+            <TouchableOpacity style={styles.button} onPress={handleRegister}>
+              <Text style={styles.buttonText}>Registrar</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          // Si el registro fue exitoso, mostramos el mensaje
+          <>
+            <Text style={styles.successMessage}>Registro exitoso</Text>
+            <Text style={styles.successMessage}>Usuario registrado correctamente</Text>
+
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.goBack()} // Regresar a la pantalla anterior
+            >
+              <Text style={styles.buttonText}>Regresar</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </LinearGradient>
   );
@@ -199,6 +223,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  successMessage: {
+    fontSize: 18,
+    color: '#4c669f',
+    marginBottom: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  errorMessage: {
+    fontSize: 16,
+    color: 'red',
+    marginBottom: 20,
+    textAlign: 'center',
   },
 });
 
