@@ -23,8 +23,7 @@ import MaterialEstudioMate from './frontend/src/alumno/MaterialEstudioMate';
 import Recuperar from './frontend/src/alumno/Recuperar'; 
 import Perfil from './frontend/src/alumno/Perfil';
 import Cursos1 from './frontend/src/alumno/Cursos1';
-import ProgresoMaterias from './frontend/src/alumno/ProgresoMaterias';
-import Foro1 from './frontend/src/alumno/Foro1';
+
 
 
 

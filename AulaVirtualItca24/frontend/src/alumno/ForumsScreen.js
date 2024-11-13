@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, TextInput, Button, Alert } from 'react-native';
-// Ruta para obtener todos los foros
+
 const ForumsScreen = ({ navigation }) => {
     const [forums, setForums] = useState([]);
     const [newTitulo, setNewTitulo] = useState('');
     const [newComentario, setNewComentario] = useState('');
     const [editingForum, setEditingForum] = useState(null);
+    const [showForm, setShowForm] = useState(false); // Estado para mostrar/ocultar el formulario
 
     const cursoId = "672b87629d6b2e0b61357990";
     const usuarioId = "672015ce049936826673b5eb";
@@ -40,6 +41,7 @@ const ForumsScreen = ({ navigation }) => {
                 setNewTitulo('');
                 setNewComentario('');
                 setEditingForum(null);
+                setShowForm(false); // Ocultar el formulario al agregar o actualizar
                 Alert.alert('Éxito', editingForum ? 'Foro editado exitosamente' : 'Foro agregado exitosamente');
             } catch (error) {
                 console.error('Error al agregar o editar el foro:', error);
@@ -54,6 +56,7 @@ const ForumsScreen = ({ navigation }) => {
         setNewTitulo(forum.titulo);
         setNewComentario(forum.comentario);
         setEditingForum(forum);
+        setShowForm(true); // Mostrar el formulario cuando se edita
     };
 
     const handleDeleteForum = async (forumId) => {
@@ -72,22 +75,29 @@ const ForumsScreen = ({ navigation }) => {
         <ScrollView contentContainerStyle={styles.container}>
             <Text style={styles.title}>Foros de Discusión</Text>
 
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Título del nuevo foro"
-                    value={newTitulo}
-                    onChangeText={setNewTitulo}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Comentario del nuevo foro"
-                    value={newComentario}
-                    onChangeText={setNewComentario}
-                    multiline
-                />
-                <Button title={editingForum ? "Actualizar Foro" : "Agregar Foro"} onPress={handleAddOrUpdateForum} />
-            </View>
+            <Button
+                title={showForm ? "Ocultar Formulario" : "Agregar Foro"}
+                onPress={() => setShowForm(!showForm)}
+            />
+
+            {showForm && (
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Título del nuevo foro"
+                        value={newTitulo}
+                        onChangeText={setNewTitulo}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Comentario del nuevo foro"
+                        value={newComentario}
+                        onChangeText={setNewComentario}
+                        multiline
+                    />
+                    <Button title={editingForum ? "Actualizar Foro" : "Agregar Foro"} onPress={handleAddOrUpdateForum} />
+                </View>
+            )}
 
             {forums.map((forum) => (
                 <View key={forum._id} style={styles.forumCard}>
