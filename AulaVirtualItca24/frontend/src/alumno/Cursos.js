@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TextInput, Button, StyleSheet, ActivityIndicator, Alert, TouchableOpacity } from 'react-native';
 import axios from 'axios';
+import { LinearGradient } from 'expo-linear-gradient'; // Importar LinearGradient
 
 // Aquí debes importar tus componentes para las pantallas correspondientes
-// Reemplaza estos nombres por las pantallas que ya tienes
-
-
 import MaterialEstudioReactNative from '../alumno/MaterialEstudioReactNative';
 import MaterialEstudioJava from '../alumno/MaterialEstudioJava';
 import MaterialEstudioUXUI from '../alumno/MaterialEstudioUXUI';
@@ -119,11 +117,19 @@ const Cursos1 = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['#85282f', '#e8ecf9', '#e8ecf9', '#fdfdfd']}  // Colores del gradiente
+      style={styles.container}  // Estilo del LinearGradient
+    >
       <Text style={styles.titulo}>Cursos Disponibles</Text>
 
       {/* Botón para mostrar el formulario de crear curso */}
-      <Button title="Crear Nuevo Curso" onPress={() => setMostrandoFormulario(true)} />
+      <TouchableOpacity 
+        style={[styles.button, { backgroundColor: '#85282f' }]} // Usamos el color superior del LinearGradient
+        onPress={() => setMostrandoFormulario(true)}
+      >
+        <Text style={styles.buttonText}>Crear Nuevo Curso</Text>
+      </TouchableOpacity>
 
       {/* Si estamos mostrando el formulario, renderizamos los campos */}
       {mostrandoFormulario && (
@@ -171,7 +177,12 @@ const Cursos1 = ({ navigation }) => {
             value={img}
             onChangeText={setImg}
           />
-          <Button title="Crear Curso" onPress={crearCurso} />
+          <TouchableOpacity 
+            style={[styles.button, { backgroundColor: '#85282f' }]} // Usamos el mismo color para el botón de crear
+            onPress={crearCurso}
+          >
+            <Text style={styles.buttonText}>Crear Curso</Text>
+          </TouchableOpacity>
         </View>
       )}
 
@@ -192,7 +203,7 @@ const Cursos1 = ({ navigation }) => {
           </View>
         )}
       />
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -207,6 +218,8 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: '#fff',
+
   },
   formulario: {
     width: '100%',
@@ -230,6 +243,19 @@ const styles = StyleSheet.create({
   },
   nombreCurso: {
     fontSize: 18,
+    fontWeight: 'bold',
+  },
+  button: {
+    height: 45,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+    width: '100%',
+    marginBottom: 10,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });

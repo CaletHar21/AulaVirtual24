@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient';  // Importar LinearGradient
 
 // Datos de ejemplo para los cursos
 const courses = [
@@ -75,7 +76,10 @@ const Cursos1 = ({ navigation }) => {
   );
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['#85282f', '#e8ecf9', '#e8ecf9', '#fdfdfd']}  // Colores del gradiente
+      style={styles.container}  // Estilo del contenedor
+    >
       <View style={styles.innerContainer}>
         <Text style={styles.title}>CURSOS</Text>
         {/* Mostrar el nombre del usuario para depuración */}
@@ -86,7 +90,7 @@ const Cursos1 = ({ navigation }) => {
           keyExtractor={item => item.id}
         />
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -96,7 +100,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'black', // Fondo negro
   },
   innerContainer: {
     width: '100%',
@@ -106,7 +109,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: 'red', // Texto rojo
+    color: '#85282f', // Texto rojo
     marginBottom: 30,
     textAlign: 'center',
     textShadowColor: 'red', // Color del borde
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
     padding: 15,
     marginVertical: 8,
     marginHorizontal: 16,
-    backgroundColor: '#2c2c2c',
+    backgroundColor: '#85282f',
     borderRadius: 10,
     elevation: 3,
     shadowColor: '#000',
