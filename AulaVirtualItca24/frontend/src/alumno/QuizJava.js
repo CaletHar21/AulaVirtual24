@@ -62,7 +62,7 @@ const QuizJava = () => {
 
   const saveScore = async (score) => {
     try {
-      await AsyncStorage.setItem('quizScore', score.toString());
+      await AsyncStorage.setItem('quizJavaScore', score.toString());
       Alert.alert('Nota guardada', `Tu nota es: ${score.toFixed(1)}`);
     } catch (error) {
       console.error('Error al guardar la nota:', error);
