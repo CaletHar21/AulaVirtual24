@@ -9,6 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';  // Asegúrate de imp
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState(''); // Estado para el mensaje de error
   const navigation = useNavigation();
 
   // Limpiar campos cuando la pantalla obtiene el enfoque
@@ -16,6 +17,7 @@ const LoginScreen = () => {
     React.useCallback(() => {
       setUsername('');  // Asegura que el campo de username esté vacío
       setPassword('');  // Asegura que el campo de password esté vacío
+      setErrorMessage(''); // Limpiar el error al enfocar la pantalla
     }, [])
   );
 
@@ -40,18 +42,18 @@ const LoginScreen = () => {
         // Navegar al HomeTabs si el login fue exitoso
         navigation.navigate('HomeTabs');
       } else {
-        Alert.alert('Error', 'Usuario o contraseña incorrectos.');
+        setErrorMessage('Usuario o contraseña incorrectos.');
       }
     } catch (error) {
       if (error.response) {
         console.error('Error del servidor:', error.response.data);
-        Alert.alert('Error', `Error del servidor: ${error.response.data.message}`);
+        setErrorMessage(` ${error.response.data.message}`); // Mostrar el error del servidor
       } else if (error.request) {
         console.error('No se recibió respuesta del servidor:', error.request);
-        Alert.alert('Error', 'No se recibió respuesta del servidor.');
+        setErrorMessage('No se recibió respuesta del servidor.');
       } else {
         console.error('Error en la configuración de Axios:', error.message);
-        Alert.alert('Error', `Error: ${error.message}`);
+        setErrorMessage(`Error: ${error.message}`);
       }
     }
   };
@@ -72,6 +74,7 @@ const LoginScreen = () => {
           resizeMode="contain" // Mantener la proporción de la imagen
         />
         <Text style={styles.title}>Iniciar Sesión</Text>
+
         <TextInput
           style={styles.input}
           placeholder="Nombre de usuario"
@@ -87,6 +90,12 @@ const LoginScreen = () => {
           onChangeText={setPassword}
           secureTextEntry
         />
+        
+        {/* Mostrar mensaje de error si existe, debajo del campo de contraseña */}
+        {errorMessage ? (
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        ) : null}
+
         <Pressable style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Ingresar</Text>
         </Pressable>
@@ -152,6 +161,14 @@ const styles = StyleSheet.create({
     color: '#4c669f',
     textAlign: 'center',
     textDecorationLine: 'underline',
+  },
+  // Estilo para el mensaje de error (con negrita)
+  errorText: {
+    color: 'red',
+    fontSize: 16,
+    fontWeight: 'bold',  // Texto en negrita
+    marginBottom: 10,
+    textAlign: 'center',
   },
 });
 
