@@ -7,10 +7,15 @@ const options = [
   { id: 1, title: 'Cursos', img: require('../../../assets/cursos.png') },
   { id: 2, title: 'Foro', img: require('../../../assets/foro.png') },
   { id: 3, title: 'Progreso Materias', img: require('../../../assets/LoginLogo.png') },
-  { id: 4, title: 'Opción 4', img: require('../../../assets/LoginLogo.png') },
-  { id: 5, title: 'Opción 5', img: require('../../../assets/LoginLogo.png') },
-  { id: 6, title: 'Opción 6', img: require('../../../assets/LoginLogo.png') },
 ];
+
+const Navbar = () => {
+  return (
+    <View style={styles.navbar}>
+      <Text style={styles.navbarText}>ITCA-FEPADE</Text>
+    </View>
+  );
+};
 
 const Home = () => {
   const navigation = useNavigation();
@@ -63,13 +68,27 @@ const Home = () => {
       style={styles.option}
       onPress={() => {
         if (item.title === 'Cursos') {
-          navigation.navigate('Cursos');
+          if(userRole === 1)
+          {
+            navigation.navigate('Cursos');
+          }
+          else if(userRole === 2)
+          {
+            navigation.navigate('Cursos1');
+          }
         }
         if (item.title === 'Foro') {
-          navigation.navigate('Foro');
+          if(userRole === 1)
+          {
+            navigation.navigate('Foro');
+          }
+          else if(userRole === 2)
+          {
+            navigation.navigate('Foro1');
+          }
         }
         if (item.title === 'Cursos1') {
-          navigation.push.navigate('Cursos1');
+          navigation.navigate('Cursos1');
         }
         if (item.title === 'Progreso Materias') {
           navigation.navigate('ProgresoMaterias');
@@ -83,6 +102,9 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
+      {/* Barra de navegación */}
+      <Navbar />
+
       {/* Botón del menú desplegable en la esquina superior derecha */}
       <TouchableOpacity style={styles.menuButton} onPress={toggleMenu}>
         <Text style={styles.menuText}>☰</Text> {/* Símbolo de menú */}
@@ -167,7 +189,7 @@ const styles = StyleSheet.create({
     top: 20,
     right: 20,
     padding: 10,
-    backgroundColor: '#c87075',
+    backgroundColor: '#0F0E0E',
     borderRadius: 50,
     zIndex: 10,  // Asegura que el botón siempre esté al frente
   },
@@ -199,6 +221,23 @@ const styles = StyleSheet.create({
   menuItemText: {
     fontSize: 16,
     color: '#333',
+  },
+  // Estilos para el Navbar
+  navbar: {
+    height: 60, // Altura del navbar
+    backgroundColor: '#0F0E0E', // Color de fondo del navbar
+    justifyContent: 'center', // Centra el contenido verticalmente
+    alignItems: 'center', // Centra el contenido horizontalmente
+    elevation: 5, // Añade sombra para simular profundidad (solo en Android)
+    shadowColor: '#000', // Sombra para iOS
+    shadowOffset: { width: 0, height: 2 }, // Desplazamiento de la sombra
+    shadowOpacity: 0.8, // Opacidad de la sombra
+    shadowRadius: 2, // Radio de la sombra
+  },
+  navbarText: {
+    color: '#fff', // Color del texto
+    fontSize: 20, // Tamaño del texto
+    fontWeight: 'bold', // Estilo de fuente
   },
 });
 

@@ -23,7 +23,6 @@ import MaterialEstudioMate from './frontend/src/alumno/MaterialEstudioMate';
 import Recuperar from './frontend/src/alumno/Recuperar'; 
 import Perfil from './frontend/src/alumno/Perfil';
 import Cursos1 from './frontend/src/alumno/Cursos1';
-import ProgresoMaterias from './frontend/src/alumno/ProgresoMaterias';
 
 
 
@@ -100,6 +99,7 @@ const App = () => {
           <Stack.Screen name="QuizUx" component={QuizUx} />
           <Stack.Screen name="MaterialEstudioMate" component={MaterialEstudioMate} />
           <Stack.Screen name="Foro" component={ForumsScreen} />
+          <Stack.Screen name="Foro1" component={Foro1} />
           <Stack.Screen name="Recuperar" component={Recuperar} />
           <Stack.Screen name="Perfil" component={Perfil} />
           <Stack.Screen name="Cursos1" component={Cursos1} />

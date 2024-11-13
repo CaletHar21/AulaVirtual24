@@ -24,8 +24,8 @@ const loginUser = async (req, res) => {
         console.log('Resultado de la comparación:', match); // Esto mostrará true o false
 
         if (!match) {
-            console.log('Contraseña inválida');
-            return res.status(400).json({ message: 'Contraseña inválida' });
+            console.log('Credenciales invalidas');
+            return res.status(400).json({ message: 'Credenciales invalidas' });
         }
 
         // Responder con un mensaje de éxito, rol, nombre y apellido del usuario
