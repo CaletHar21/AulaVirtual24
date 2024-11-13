@@ -33,14 +33,14 @@ const Cursos1 = ({ navigation }) => {
     getUserName();
   }, []); // Esto solo se ejecuta una vez al montar el componente
 
-  // Filtrar los cursos si el nombre del usuario es "erick"
+  
   useEffect(() => {
     console.log(`Nombre del usuario: ${userName}`);  // Imprimir el nombre del usuario para ver si se recuperó bien
     if (userName === 'erick b.') {
       setFilteredCourses(courses.slice(0, 2)); // Solo los primeros dos cursos
       console.log('Cursos filtrados para Erick:', courses.slice(0, 2)); // Ver los cursos filtrados
     } else {
-      setFilteredCourses(courses); // Muestra todos los cursos si no es Erick
+      setFilteredCourses(courses); 
       console.log('Cursos disponibles:', courses); // Ver todos los cursos disponibles
     }
   }, [userName]); // Se ejecuta cada vez que cambia el nombre del usuario
